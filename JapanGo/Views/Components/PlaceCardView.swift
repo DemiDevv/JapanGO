@@ -34,10 +34,11 @@ struct PlaceCardView: View {
                     Text(placeDescription)
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.8))
-                        .lineLimit(2)
+                        .lineLimit(4)
                 }
                 .foregroundStyle(.white)
                 .padding(10)
+                .padding(.bottom, 20)
                 .background(alignment: .bottom) {
                     CachedImageView(url: url)
                         .frame(width: 300, height: 400)
