@@ -20,6 +20,8 @@ struct CachedImageView: View {
             .fade(duration: 0.3)
             .resizable()
             .scaledToFill()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .clipped()
     }
 }
 

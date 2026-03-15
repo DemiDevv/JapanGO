@@ -127,7 +127,10 @@ extension CategoryInfo {
     static let mockArray: [CategoryInfo] = [
         mock,
         CategoryInfo(id: "food", nameEN: "Food & Cafes", nameRU: "Еда и кафе", icon: "🍜"),
-        CategoryInfo(id: "nature", nameEN: "Nature", nameRU: "Природа", icon: "🌿")
+        CategoryInfo(id: "nature", nameEN: "Nature", nameRU: "Природа", icon: "🌿"),
+        CategoryInfo(id: "nature1", nameEN: "Nature", nameRU: "Природа", icon: "🌿"),
+        CategoryInfo(id: "nature2", nameEN: "Nature", nameRU: "Природа", icon: "🌿"),
+        CategoryInfo(id: "nature3", nameEN: "Nature", nameRU: "Природа", icon: "🌿")
     ]
 }
 #endif
