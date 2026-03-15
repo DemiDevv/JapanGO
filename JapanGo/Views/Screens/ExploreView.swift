@@ -114,7 +114,7 @@ struct ExploreView: View {
 
             //PlaceScrollView
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
+                HStack(spacing: 20) {
                     ForEach(Place.mockArray) { place in
                         PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN)
                     }

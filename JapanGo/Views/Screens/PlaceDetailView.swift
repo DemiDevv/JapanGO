@@ -9,37 +9,87 @@ import SwiftUI
 
 struct PlaceDetailView: View {
 
-    let url = Place.mock.imageURLs[0]
+    let url = Place.mock.imageURLs[2]
 
     var body: some View {
+
+        VStack(spacing: -30) {
             CachedImageView(url: url)
-                .ignoresSafeArea()
                 .overlay(alignment: .top) {
-
                     ZStack {
-                        Text("Title")
+                        Text("Kinkaku-ji")
                             .font(.title)
-
+                            .fontWeight(.bold)
+                            .shadow(color: .black.opacity(0.5), radius: 4)
+                            .foregroundStyle(.whiteJG)
                         HStack {
                             Button {
                                 print("Back")
                             } label: {
                                 Image(systemName: "chevron.left")
+                                    .fontWeight(.bold)
                                     .foregroundStyle(.blackJG)
                                     .padding(20)
                                     .background {
                                         Circle()
-                                            .foregroundStyle(.creamJG.opacity(0.8))
+                                            .foregroundStyle(.whiteJG.opacity(0.8))
                                     }
                             }
-
                             Spacer()
                         }
                         .padding(.leading, 20)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 60)
+                    .padding(.top, 50)
                 }
+            //InformationView
+            VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Best photos in the morning when sun illuminates")
+                        .font(.title)
+                        .foregroundStyle(.whiteJG)
+
+                    Text("¥500")
+                        .foregroundStyle(.whiteJG)
+
+                }
+                .padding(.top, 20)
+                .padding(.leading, 20)
+
+                //Chips
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(CategoryInfo.mockArray) { category in
+
+                                Text(category.nameEN)
+                                    .foregroundStyle(.whiteJG)
+                                    .padding(10)
+                                    .background(Capsule().fill(.blackGrayJG))
+                        }
+                    }
+                    .padding(10)
+                }
+
+
+                Text("Long Description Very Long Description Long Description Very Long Description Long Description Long Description Very Long Description Long Description Very Long Description Long Description Very Long Description Long Description Long Description Very Long Description")
+                    .foregroundStyle(.whiteJG)
+                    .padding(.leading, 20)
+
+                Button {
+                    print("Done")
+                } label: {
+                    Text("Add to Favorite")
+                        .foregroundStyle(.whiteJG)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Capsule().fill(.blackGrayJG))
+                }
+                .padding(20)
+            }
+            .frame(maxWidth: .infinity)
+            .background(.blackJG)
+            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
+        }
+        .ignoresSafeArea()
     }
 }
 

@@ -13,14 +13,16 @@ struct CachedImageView: View {
     let url: String
 
     var body: some View {
-        KFImage(URL(string: url))
-            .placeholder {
-                ProgressView()
+        Color.clear
+            .overlay {
+                KFImage(URL(string: url))
+                    .placeholder {
+                        ProgressView()
+                    }
+                    .fade(duration: 0.3)
+                    .resizable()
+                    .scaledToFill()
             }
-            .fade(duration: 0.3)
-            .resizable()
-            .scaledToFill()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .clipped()
     }
 }
