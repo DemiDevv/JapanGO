@@ -11,6 +11,7 @@ struct ExploreView: View {
 
     @State private var searchText = ""
     @State private var selectedCategory: String? = nil
+    @StateObject private var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
 
     var body: some View {
 
@@ -72,7 +73,7 @@ struct ExploreView: View {
             //Chips
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(CategoryInfo.mockArray) { category in
+                    ForEach(exploreViewModel.categoryInfo) { category in
                         Button {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 if category.id == selectedCategory {
@@ -115,7 +116,7 @@ struct ExploreView: View {
             //PlaceScrollView
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
-                    ForEach(Place.mockArray) { place in
+                    ForEach(exploreViewModel.places) { place in
                         PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN)
                     }
                 }
@@ -123,6 +124,9 @@ struct ExploreView: View {
             }
 
             Spacer()
+        }
+        .task {
+            await exploreViewModel.fetchPlaces()
         }
         .background(.blackJG)
     }
