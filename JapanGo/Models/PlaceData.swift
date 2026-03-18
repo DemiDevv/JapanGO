@@ -26,7 +26,7 @@ struct RegionInfo: Decodable, Identifiable {
     let nameRU: String
 }
 
-struct Place: Decodable, Identifiable {
+struct Place: Decodable, Identifiable, Hashable {
     let id: String
     let name: String
     let nameJP: String

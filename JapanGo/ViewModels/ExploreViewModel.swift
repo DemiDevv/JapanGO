@@ -14,7 +14,21 @@ final class ExploreViewModel: ObservableObject {
     @Published var places: [Place] = []
     @Published var categoryInfo: [CategoryInfo] = []
     @Published var isLoading: Bool = false
+    @Published var selectedCategory: String? = nil
 
+    var filteredPlaces: [Place] {
+        if selectedCategory == nil {
+            return places
+        } else {
+            return places.filter {
+                $0.category == selectedCategory
+            }
+        }
+    }
+
+    var previewPlaces: [Place] {
+        return Array(filteredPlaces.prefix(10))
+    }
     private let service: PlaceService
 
     init(service: PlaceService) {
