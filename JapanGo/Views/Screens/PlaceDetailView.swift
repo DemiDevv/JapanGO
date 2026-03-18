@@ -12,6 +12,13 @@ struct PlaceDetailView: View {
     @Environment(\.dismiss) private var dismiss
     let place: Place
 
+    var chips: [(title: String, value: String)] {[
+        ("Rating", "\(place.rating)"),
+        ("Hours", place.hours),
+        ("City", place.city),
+        ("Region", place.region)
+    ]}
+
     var body: some View {
 
         VStack(spacing: -30) {
@@ -60,12 +67,21 @@ struct PlaceDetailView: View {
                 //Chips
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(CategoryInfo.mockArray) { category in
+                        ForEach(chips, id: \.title) { chip in
 
-                                Text(category.nameEN)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(chip.title)
+                                    .font(.title3)
+                                    .foregroundStyle(.grayJG)
+                                Text(chip.value)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
                                     .foregroundStyle(.whiteJG)
-                                    .padding(10)
-                                    .background(Capsule().fill(.blackGrayJG))
+
+                            }
+                            .padding(.horizontal, 30)
+                            .padding(.vertical, 10)
+                            .background(RoundedRectangle(cornerRadius: 20).fill(.blackGrayJG))
                         }
                     }
                     .padding(10)
