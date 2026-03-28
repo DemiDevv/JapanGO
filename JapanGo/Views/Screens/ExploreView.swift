@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ExploreView: View {
 
-    @State private var searchText = ""
     @State private var path = NavigationPath()
     @StateObject private var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
 
@@ -50,7 +49,7 @@ struct ExploreView: View {
 
                 //TextField
                 HStack {
-                    TextField("", text: $searchText, prompt: Text("Find your place")
+                    TextField("", text: $exploreViewModel.searchText, prompt: Text("Find your place")
                         .foregroundStyle(.creamJG))
                     .padding(10)
 
@@ -106,7 +105,7 @@ struct ExploreView: View {
                     Spacer()
 
                     Button {
-                        print("See all")
+                        path.append(Route.allPlaces(exploreViewModel.previewPlaces))
                     } label: {
                         Text("See all")
                             .foregroundStyle(.whiteJG)
@@ -119,7 +118,7 @@ struct ExploreView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 20) {
                         ForEach(exploreViewModel.previewPlaces) { place in
-                            PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN)
+                            PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 300, cardheight: 400)
                                 .onTapGesture {
                                     path.append(Route.placeDetail(place))
                                 }
@@ -139,6 +138,8 @@ struct ExploreView: View {
                 switch route {
                 case .placeDetail(let place):
                     PlaceDetailView(place: place)
+                case .allPlaces(let places):
+                    AllPlacesView(place: places)
                 }
             }
         }

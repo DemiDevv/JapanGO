@@ -13,10 +13,12 @@ struct PlaceCardView: View {
     let placeName: String
     let placePrice: String
     let placeDescription: String
+    let cardWidth: CGFloat
+    let cardheight: CGFloat
 
     var body: some View {
         CachedImageView(url: url)
-            .frame(width: 300, height: 400)
+            .frame(width: cardWidth, height: cardheight)
             .overlay(alignment: .bottom) {
                 VStack(alignment: .leading) {
                     HStack {
@@ -41,7 +43,7 @@ struct PlaceCardView: View {
                 .padding(.bottom, 20)
                 .background(alignment: .bottom) {
                     CachedImageView(url: url)
-                        .frame(width: 300, height: 400)
+                        .frame(width: cardWidth, height: cardheight)
                         .blur(radius: 3)
                 }
                 .clipped()
@@ -55,6 +57,8 @@ struct PlaceCardView: View {
         url: Place.mock.imageURLs[0],
         placeName: Place.mock.name,
         placePrice: Place.mock.price,
-        placeDescription: Place.mock.descriptionEN
+        placeDescription: Place.mock.descriptionEN,
+        cardWidth: 300,
+        cardheight: 400
     )
 }

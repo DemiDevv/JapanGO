@@ -15,15 +15,15 @@ final class ExploreViewModel: ObservableObject {
     @Published var categoryInfo: [CategoryInfo] = []
     @Published var isLoading: Bool = false
     @Published var selectedCategory: String? = nil
+    @Published var searchText = ""
+
+    var cancellables = Set<AnyCancellable>()
+
 
     var filteredPlaces: [Place] {
-        if selectedCategory == nil {
-            return places
-        } else {
-            return places.filter {
-                $0.category == selectedCategory
-            }
-        }
+        places
+            .filter { selectedCategory == nil || $0.category == selectedCategory }
+            .filter { searchText.isEmpty || $0.name.localizedCaseInsensitiveContains(searchText) }
     }
 
     var previewPlaces: [Place] {
@@ -33,6 +33,11 @@ final class ExploreViewModel: ObservableObject {
 
     init(service: PlaceService) {
         self.service = service
+        $searchText
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { print("Пользователь начал вводить: \($0)") }
+            .store(in: &cancellables)
     }
 
     func fetchPlaces() async {
