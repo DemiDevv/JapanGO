@@ -48,28 +48,10 @@ struct ExploreView: View {
                 .padding(.bottom, 20)
 
                 //TextField
-                HStack {
-                    TextField("", text: $exploreViewModel.searchText, prompt: Text("Find your place")
-                        .foregroundStyle(.creamJG))
-                    .padding(10)
 
-                    Button {
-                        print("notifications tapped")
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 20))
-                            .foregroundStyle(.blackJG)
-                    }
-                    .padding(10)
-                    .background {
-                        Circle()
-                            .foregroundStyle(.creamJG)
-                    }
-                }
-                .padding(5)
-                .background(Color.blackGrayJG, in: Capsule())
-                .padding(.horizontal, 20)
-                .padding(.bottom, 5)
+                SearchFieldView(text: $exploreViewModel.searchText)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 5)
 
                 //Chips
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -105,7 +87,7 @@ struct ExploreView: View {
                     Spacer()
 
                     Button {
-                        path.append(Route.allPlaces(exploreViewModel.previewPlaces))
+                        path.append(Route.allPlaces)
                     } label: {
                         Text("See all")
                             .foregroundStyle(.whiteJG)
@@ -138,8 +120,8 @@ struct ExploreView: View {
                 switch route {
                 case .placeDetail(let place):
                     PlaceDetailView(place: place)
-                case .allPlaces(let places):
-                    AllPlacesView(place: places)
+                case .allPlaces:
+                    AllPlacesView(viewModel: exploreViewModel, path: $path)
                 }
             }
         }

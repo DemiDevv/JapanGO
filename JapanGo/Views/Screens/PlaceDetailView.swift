@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PlaceDetailView: View {
 
-    @Environment(\.dismiss) private var dismiss
     let place: Place
 
     var chips: [(title: String, value: String)] {[
@@ -31,19 +30,8 @@ struct PlaceDetailView: View {
                             .shadow(color: .black.opacity(0.5), radius: 4)
                             .foregroundStyle(.whiteJG)
                         HStack {
-                            Button {
-                                print("Back")
-                                dismiss()
-                            } label: {
-                                Image(systemName: "chevron.left")
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.blackJG)
-                                    .padding(20)
-                                    .background {
-                                        Circle()
-                                            .foregroundStyle(.whiteJG.opacity(0.8))
-                                    }
-                            }
+                            BackButtonView()
+
                             Spacer()
                         }
                         .padding(.leading, 20)

@@ -9,9 +9,10 @@ import SwiftUI
 
 struct AllPlacesView: View {
 
-    let viewTitle: String = "All Places"
+    @ObservedObject var viewModel: ExploreViewModel
+    @Binding var path: NavigationPath
 
-    let place: [Place]
+    let viewTitle: String = "All Places"
 
     let columns = [
         GridItem(),
@@ -20,20 +21,38 @@ struct AllPlacesView: View {
 
     var body: some View {
 
-        Text(viewTitle)
-            .font(.title2.bold())
-            .padding(.vertical, 20)
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(place) { place in
-                    PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 180, cardheight: 240)
+            VStack {
+                ZStack {
+                    Text(viewTitle)
+                        .font(.title2.bold())
+                        .foregroundStyle(.whiteJG)
+                        .padding(.vertical, 20)
+
+                    HStack{
+                        BackButtonView()
+                        .padding(.leading, 20)
+
+                        Spacer()
+                    }
+                }
+
+                SearchFieldView(text: $viewModel.searchText)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 5)
+
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(viewModel.previewPlaces) { place in
+                            PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 180, cardheight: 240)
+                                .onTapGesture {
+                                    path.append(Route.placeDetail(place))
+                                }
+                        }
+                    }
+                    .padding(.horizontal, 20)
                 }
             }
-            .padding(.horizontal, 20)
-        }
+            .navigationBarBackButtonHidden(true)
+            .background(.blackJG)
     }
-}
-
-#Preview {
-    AllPlacesView(place: Place.mockArray)
 }
