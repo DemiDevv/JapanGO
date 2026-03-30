@@ -17,24 +17,35 @@ protocol PlaceRepositoryProtocol {
 
 final class CoreDataManager {
 
-    let container: NSPersistentContainer
+    private let container: NSPersistentContainer
 
-    var context: NSManagedObjectContext {
+    private var context: NSManagedObjectContext {
         container.viewContext
     }
 
     init() {
-        container = NSPersistentContainer(name: "JapanGo")
+        container = NSPersistentContainer(name: "JapanGO")
 
-        container.loadPersistentStores { _, error in
+        container.loadPersistentStores { [weak container] _, error in
             if let error {
-                fatalError("Unresolved error \(error), \(error.localizedDescription)")
+                print("CoreData error: \(error.localizedDescription)")
+
+                guard let storeURL = container?.persistentStoreDescriptions.first?.url else { return }
+
+                try? FileManager.default.removeItem(at: storeURL)
+
+                container?.loadPersistentStores { _, retryError in
+                    if let retryError {
+                        print("Core Data fatal: \(retryError.localizedDescription)")
+                    }
+                }
             }
         }
+
         context.automaticallyMergesChangesFromParent = true
     }
 
-    func save() {
+    private func save() {
         guard context.hasChanges else { return }
         do {
             try context.save()
@@ -46,8 +57,13 @@ final class CoreDataManager {
 
 extension CoreDataManager: PlaceRepositoryProtocol {
     func addToFavorite(place: Place) {
-        _ = place.toEntity(context: context)
-        save()
+        if isFavorite(id: place.id) {
+            print("Уже есть в избранном")
+            return
+        } else {
+            _ = place.toEntity(context: context)
+            save()
+        }
     }
     
     func removeFromFavorite(id: String) {
@@ -69,7 +85,7 @@ extension CoreDataManager: PlaceRepositoryProtocol {
 
         do {
             let entities = try context.fetch(request)
-            return entities.compactMap { $0.toPlace() }
+            return entities.map { $0.toPlace() }
         } catch {
             print("Ошибка загрузки: \(error)")
             return []
@@ -127,55 +143,33 @@ extension Place {
 // MARK: - PlaceEntity → Place
 
 extension PlaceEntity {
-    func toPlace() -> Place? {
-        guard
-            let id,
-            let name,
-            let nameJP,
-            let descriptionEN,
-            let descriptionRU,
-            let category,
-            let address,
-            let addressJP,
-            let city,
-            let region,
-            let imageURLs = imageURLs,
-            let price,
-            let hours,
-            let nearestStation,
-            let tipsEN,
-            let tipsRU,
-            let tags = tags
-        else {
-            return nil
-        }
-
+    func toPlace() -> Place {
         return Place(
-            id: id,
-            name: name,
-            nameJP: nameJP,
-            descriptionEN: descriptionEN,
-            descriptionRU: descriptionRU,
-            category: category,
+            id: id ?? "",
+            name: name ?? "",
+            nameJP: nameJP ?? "",
+            descriptionEN: descriptionEN ?? "",
+            descriptionRU: descriptionRU ?? "",
+            category: category ?? "",
             rating: rating,
             latitude: latitude,
             longitude: longitude,
-            address: address,
-            addressJP: addressJP,
-            city: city,
-            region: region,
-            imageURLs: imageURLs,
-            price: price,
-            hours: hours,
-            closedDays: closedDays,
-            website: website,
-            phoneNumber: phoneNumber,
-            nearestStation: nearestStation,
+            address: address ?? "",
+            addressJP: addressJP ?? "",
+            city: city ?? "",
+            region: region ?? "",
+            imageURLs: imageURLs ?? [],
+            price: price ?? "",
+            hours: hours ?? "",
+            closedDays: closedDays ?? "",
+            website: website ?? "",
+            phoneNumber: phoneNumber ?? "",
+            nearestStation: nearestStation ?? "",
             walkFromStation: Int(walkFromStation),
-            tipsEN: tipsEN,
-            tipsRU: tipsRU,
-            tags: tags,
-            seasonRecommendation: seasonRecommendation
+            tipsEN: tipsEN ?? "",
+            tipsRU: tipsRU ?? "",
+            tags: tags ?? [],
+            seasonRecommendation: seasonRecommendation ?? ""
         )
     }
 }
