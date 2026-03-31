@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 enum Tab: String, CaseIterable {
-    case home, map, favorites, profile
+    case home, map, favorite, profile
 
     var icon: String {
         switch self {
         case .home: "house"
         case .map: "map"
-        case .favorites: "heart"
+        case .favorite: "heart"
         case .profile: "person"
         }
     }
@@ -24,7 +24,7 @@ enum Tab: String, CaseIterable {
         switch self {
         case .home: "house.fill"
         case .map: "map.fill"
-        case .favorites: "heart.fill"
+        case .favorite: "heart.fill"
         case .profile: "person.fill"
         }
     }

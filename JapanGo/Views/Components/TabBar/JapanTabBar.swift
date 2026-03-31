@@ -5,7 +5,6 @@
 //  Created by Demain Petropavlov on 14.03.2026.
 //
 
-import Foundation
 import SwiftUI
 
 struct JapanTabBar: View {

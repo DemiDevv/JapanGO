@@ -13,7 +13,7 @@ struct JapanGoApp: App {
     @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
     var body: some Scene {
         WindowGroup {
-            ExploreView()
+            RootView()
                 .environmentObject(favoriteViewModel)
         }
     }
