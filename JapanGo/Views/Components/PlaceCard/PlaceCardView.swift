@@ -15,10 +15,28 @@ struct PlaceCardView: View {
     let placeDescription: String
     let cardWidth: CGFloat
     let cardheight: CGFloat
+    var isFavorite: Bool
+
+    var onFavoriteTap: () -> Void
 
     var body: some View {
         CachedImageView(url: url)
             .frame(width: cardWidth, height: cardheight)
+            .overlay(alignment: .topTrailing) {
+                Button {
+                    onFavoriteTap()
+                } label: {
+                    ZStack {
+                        Circle()
+                            .fill(.creamJG.opacity(0.8))
+                            .frame(width: 40, height: 40)
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .foregroundStyle(isFavorite ? .redJG : .whiteJG)
+                            .font(.system(size: 20))
+                    }
+                }
+                .padding(20)
+            }
             .overlay(alignment: .bottom) {
                 VStack(alignment: .leading) {
                     HStack {
@@ -47,6 +65,7 @@ struct PlaceCardView: View {
                         .blur(radius: 3)
                 }
                 .clipped()
+                .allowsHitTesting(false)
             }
             .clipShape(RoundedRectangle(cornerRadius: 20))
     }
@@ -59,6 +78,9 @@ struct PlaceCardView: View {
         placePrice: Place.mock.price,
         placeDescription: Place.mock.descriptionEN,
         cardWidth: 300,
-        cardheight: 400
-    )
+        cardheight: 400,
+        isFavorite: true
+    ) {
+            print("Like")
+        }
 }

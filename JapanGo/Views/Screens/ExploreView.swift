@@ -11,6 +11,7 @@ struct ExploreView: View {
 
     @State private var path = NavigationPath()
     @StateObject private var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
 
     var body: some View {
 
@@ -100,10 +101,13 @@ struct ExploreView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 20) {
                         ForEach(exploreViewModel.previewPlaces) { place in
-                            PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 300, cardheight: 400)
-                                .onTapGesture {
-                                    path.append(Route.placeDetail(place))
-                                }
+                            PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 300, cardheight: 400, isFavorite: favoriteViewModel.isFavorite(id: place.id)) {
+                                favoriteViewModel.toggleFavorite(place: place)
+                                print("Like")
+                            }
+                            .onTapGesture {
+                                path.append(Route.placeDetail(place))
+                            }
                         }
                     }
                     .padding(.horizontal, 20)
@@ -129,5 +133,8 @@ struct ExploreView: View {
 }
 
 #Preview {
+    @Previewable @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
+
     ExploreView()
+        .environmentObject(favoriteViewModel)
 }

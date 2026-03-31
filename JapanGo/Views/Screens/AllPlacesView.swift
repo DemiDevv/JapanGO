@@ -11,6 +11,7 @@ struct AllPlacesView: View {
 
     @ObservedObject var viewModel: ExploreViewModel
     @Binding var path: NavigationPath
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
 
     let viewTitle: String = "All Places"
 
@@ -43,7 +44,9 @@ struct AllPlacesView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(viewModel.previewPlaces) { place in
-                            PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 180, cardheight: 240)
+                            PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 180, cardheight: 240, isFavorite: favoriteViewModel.isFavorite(id: place.id)) {
+                                print("Like")
+                            }
                                 .onTapGesture {
                                     path.append(Route.placeDetail(place))
                                 }

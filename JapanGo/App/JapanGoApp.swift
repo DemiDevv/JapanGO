@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct JapanGoApp: App {
+
+    @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
     var body: some Scene {
         WindowGroup {
             ExploreView()
+                .environmentObject(favoriteViewModel)
         }
     }
 }
