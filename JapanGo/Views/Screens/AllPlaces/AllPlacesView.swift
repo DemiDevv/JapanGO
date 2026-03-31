@@ -21,7 +21,6 @@ struct AllPlacesView: View {
     ]
 
     var body: some View {
-
             VStack {
                 ZStack {
                     Text(viewTitle)
