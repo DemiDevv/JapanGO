@@ -23,6 +23,7 @@ struct CachedImageView: View {
                     .resizable()
                     .scaledToFill()
             }
+            .contentShape(Rectangle())
             .clipped()
     }
 }

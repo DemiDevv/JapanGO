@@ -103,7 +103,6 @@ struct ExploreView: View {
                         ForEach(exploreViewModel.previewPlaces) { place in
                             PlaceCardView(url: place.imageURLs[0], placeName: place.name, placePrice: place.price, placeDescription: place.descriptionEN,cardWidth: 300, cardheight: 400, isFavorite: favoriteViewModel.isFavorite(id: place.id)) {
                                 favoriteViewModel.toggleFavorite(place: place)
-                                print("Like")
                             }
                             .onTapGesture {
                                 path.append(Route.placeDetail(place))
