@@ -36,5 +36,7 @@ struct RootView: View {
 }
 
 #Preview {
+    @Previewable @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
     RootView()
+        .environmentObject(favoriteViewModel)
 }

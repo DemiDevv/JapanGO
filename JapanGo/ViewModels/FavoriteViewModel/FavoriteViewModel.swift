@@ -34,10 +34,14 @@ final class FavoriteViewModel: ObservableObject {
     }
 
     func toggleFavorite(place: Place) {
+        print("⭐ [ViewModel] toggleFavorite called for: \(place.name) (id: \(place.id))")
         if isFavorite(id: place.id) {
+            print("⭐ [ViewModel] removing from favorites")
             removeFromFavorite(id: place.id)
         } else {
+            print("⭐ [ViewModel] adding to favorites")
             addToFavorite(place: place)
         }
+        print("⭐ [ViewModel] favorites count after toggle: \(favoritePlaces.count)")
     }
 }

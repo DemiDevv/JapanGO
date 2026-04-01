@@ -46,19 +46,24 @@ final class CoreDataManager {
     }
 
     private func save() {
-        guard context.hasChanges else { return }
+        guard context.hasChanges else {
+            print("💾 [CoreData] save called but no changes")
+            return
+        }
         do {
             try context.save()
+            print("💾 [CoreData] save SUCCESS")
         } catch {
-            print("Ошибка сохранения \(error)")
+            print("💾 [CoreData] save FAILED: \(error)")
         }
     }
 }
 
 extension CoreDataManager: PlaceRepositoryProtocol {
     func addToFavorite(place: Place) {
+        print("💾 [CoreData] addToFavorite: \(place.name) (id: \(place.id))")
         if isFavorite(id: place.id) {
-            print("Уже есть в избранном")
+            print("💾 [CoreData] already in favorites, skipping")
             return
         } else {
             _ = place.toEntity(context: context)
@@ -124,7 +129,7 @@ extension Place {
         entity.addressJP = addressJP
         entity.city = city
         entity.region = region
-        entity.imageURLs = imageURLs as [String]
+        entity.imageURLs = imageURLs as NSObject
         entity.price = price
         entity.hours = hours
         entity.closedDays = closedDays
@@ -134,7 +139,7 @@ extension Place {
         entity.walkFromStation = Int16(walkFromStation)
         entity.tipsEN = tipsEN
         entity.tipsRU = tipsRU
-        entity.tags = tags as [String]
+        entity.tags = tags as NSObject
         entity.seasonRecommendation = seasonRecommendation
         return entity
     }
@@ -158,7 +163,7 @@ extension PlaceEntity {
             addressJP: addressJP ?? "",
             city: city ?? "",
             region: region ?? "",
-            imageURLs: imageURLs ?? [],
+            imageURLs: imageURLs as? [String] ?? [],
             price: price ?? "",
             hours: hours ?? "",
             closedDays: closedDays ?? "",
@@ -168,7 +173,7 @@ extension PlaceEntity {
             walkFromStation: Int(walkFromStation),
             tipsEN: tipsEN ?? "",
             tipsRU: tipsRU ?? "",
-            tags: tags ?? [],
+            tags: tags as? [String] ?? [],
             seasonRecommendation: seasonRecommendation ?? ""
         )
     }

@@ -10,6 +10,10 @@ import SwiftUI
 @main
 struct JapanGoApp: App {
 
+    init() {
+        StringArrayTransformer.register()
+    }
+
     @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
     var body: some Scene {
         WindowGroup {
