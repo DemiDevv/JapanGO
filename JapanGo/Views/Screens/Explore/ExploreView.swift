@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExploreView: View {
 
-    @State private var path = NavigationPath()
+    @Binding var path: NavigationPath
     @StateObject private var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
     @EnvironmentObject var favoriteViewModel: FavoriteViewModel
 
@@ -133,7 +133,8 @@ struct ExploreView: View {
 
 #Preview {
     @Previewable @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
+    @Previewable @State var explorePath = NavigationPath()
 
-    ExploreView()
+    ExploreView(path: $explorePath)
         .environmentObject(favoriteViewModel)
 }

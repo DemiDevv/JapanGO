@@ -9,8 +9,16 @@ import SwiftUI
 
 struct RootView: View {
 
+    @State private var explorePath = NavigationPath()
+    @State private var mapPath = NavigationPath()
+    @State private var favoritePath = NavigationPath()
+    @State private var profilePath = NavigationPath()
     @State private var selectedTab: Tab = .home
     @Namespace private var tabAnimation
+
+    private var isTabBarHidden: Bool {
+        !explorePath.isEmpty || !mapPath.isEmpty || !favoritePath.isEmpty || !profilePath.isEmpty
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -18,7 +26,7 @@ struct RootView: View {
             Group {
                 switch selectedTab {
                 case .home:
-                    ExploreView()
+                    ExploreView(path: $explorePath)
                 case .map:
                     MapView()
                 case .favorite:
@@ -27,11 +35,17 @@ struct RootView: View {
                     ProfileView()
                 }
             }
-            JapanTabBar(
-                selectedTab: $selectedTab,
-                animation: tabAnimation
-            )
+
+            if !isTabBarHidden {
+                JapanTabBar(
+                    selectedTab: $selectedTab,
+                    animation: tabAnimation
+                )
+                .transition(.opacity)
+            }
         }
+        .animation(.easeInOut(duration: 0.5), value: isTabBarHidden)
+        .background(.blackJG)
     }
 }
 
