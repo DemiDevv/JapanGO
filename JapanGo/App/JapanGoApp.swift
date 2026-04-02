@@ -6,19 +6,34 @@
 //
 
 import SwiftUI
+import Firebase
+import GoogleSignIn
 
 @main
 struct JapanGoApp: App {
 
     init() {
+        FirebaseApp.configure()
         StringArrayTransformer.register()
     }
 
     @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
+    @StateObject var authViewModel = AuthViewModel()
+
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(favoriteViewModel)
+            Group {
+                if !authViewModel.isLoggedIn {
+                    LoginView()
+                } else {
+                    RootView()
+                }
+            }
+            .onOpenURL { url in
+                GIDSignIn.sharedInstance.handle(url)
+            }
+            .environmentObject(authViewModel)
+            .environmentObject(favoriteViewModel)
         }
     }
 }

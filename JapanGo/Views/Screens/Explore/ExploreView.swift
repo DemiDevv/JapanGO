@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ExploreView: View {
 
     @Binding var path: NavigationPath
     @StateObject private var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
     @EnvironmentObject var favoriteViewModel: FavoriteViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
 
     var body: some View {
 
@@ -21,15 +23,17 @@ struct ExploreView: View {
 
                 //Avatar Name Button
                 HStack {
-                    Image(systemName: "person.circle.fill")
-                        .font(.system(size: 50))
-                        .foregroundColor(.whiteJG)
+                    KFImage(authViewModel.photoURL)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
 
                     VStack(alignment: .leading) {
                         Text("Good to see you,")
                             .font(.subheadline)
                             .foregroundStyle(.whiteJG)
-                        Text("Demian Petropavlov")
+                        Text(authViewModel.userName)
                             .foregroundStyle(.whiteJG)
                             .font(.title2)
                             .fontWeight(.bold)
@@ -133,8 +137,11 @@ struct ExploreView: View {
 
 #Preview {
     @Previewable @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
+    @Previewable @StateObject var authViewModel = AuthViewModel()
+
     @Previewable @State var explorePath = NavigationPath()
 
     ExploreView(path: $explorePath)
         .environmentObject(favoriteViewModel)
+        .environmentObject(authViewModel)
 }
