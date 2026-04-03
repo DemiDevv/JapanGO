@@ -48,7 +48,7 @@ struct LoginView: View {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                             Text("Sign in with Google")
-                                .font(.system(size: 20, weight: .medium))
+                                .font(.system(size: 19, weight: .medium))
                         }
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
@@ -56,6 +56,22 @@ struct LoginView: View {
                         .foregroundColor(.black)
                         .cornerRadius(12)
                     }
+
+                    Text("By continuing, you agree to our")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.white.opacity(0.5))
+
+                    HStack(spacing: 4) {
+                        if let privacyURL = URL(string: "https://yoursite.com/privacy") {
+                            Link("Privacy Policy", destination: privacyURL)
+                        }
+                        Text("and")
+                            .foregroundStyle(.white.opacity(0.5))
+                        if let termsURL = URL(string: "https://yoursite.com/terms") {
+                            Link("Terms of Use", destination: termsURL)
+                        }
+                    }
+                    .font(.system(size: 11))
                 }
                 .padding(24)
                 .background(Color.black.opacity(0.3))
@@ -63,7 +79,6 @@ struct LoginView: View {
                 .padding(20)
             }
             .foregroundStyle(.whiteJG)
-
 
         }
     }

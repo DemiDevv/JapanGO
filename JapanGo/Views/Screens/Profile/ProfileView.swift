@@ -12,6 +12,7 @@ import Kingfisher
 
 struct ProfileView: View {
 
+    @State private var showLogoutAlert: Bool = false
     @Binding var path: NavigationPath
     @EnvironmentObject var authViewModel: AuthViewModel
 
@@ -172,11 +173,19 @@ private extension ProfileView {
         Section {
             Button(role: .destructive) {
                 // TODO: - Log out action
-                authViewModel.logout()
+                showLogoutAlert = true
             } label: {
-                Text("Log out")
+                Text("Выйти")
                     .font(.system(size: 15, weight: .medium))
                     .frame(maxWidth: .infinity)
+            }
+            .alert("Выйти из JapanGO", isPresented: $showLogoutAlert) {
+                Button("Отмена", role: .cancel) {}
+                Button("Да", role: .destructive) {
+                    authViewModel.logout()
+                }
+            } message: {
+                Text("Вы точно хотите выйти?")
             }
         }
         .listRowBackground(Color.blackGrayJG)

@@ -21,9 +21,17 @@ final class AuthViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var photoURL: URL?
 
+    private var authStateHandle: AuthStateDidChangeListenerHandle?
+
     init() {
-        if let user = Auth.auth().currentUser {
-            setUser(user: user)
+        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            Task { @MainActor in
+                if let user {
+                    self?.setUser(user: user)
+                } else {
+                    self?.clearUser()
+                }
+            }
         }
     }
 
@@ -55,17 +63,20 @@ final class AuthViewModel: ObservableObject {
     }
 
     private func setUser(user: User) {
-        self.isLoggedIn = true
-        self.userName = user.displayName ?? ""
-        self.email = user.email ?? ""
-        self.photoURL = user.photoURL
+        isLoggedIn = true
+        userName = user.displayName ?? ""
+        email = user.email ?? ""
+        photoURL = user.photoURL
     }
 
-    func logout() {
-        googleAuthService.logout()
+    private func clearUser() {
         isLoggedIn = false
         userName = ""
         email = ""
         photoURL = nil
+    }
+
+    func logout() {
+        googleAuthService.logout()
     }
 }

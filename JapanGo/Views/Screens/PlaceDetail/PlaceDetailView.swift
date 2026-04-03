@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlaceDetailView: View {
 
+    @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     let place: Place
 
     var chips: [(title: String, value: String)] {[
@@ -81,7 +82,7 @@ struct PlaceDetailView: View {
                     .padding(.leading, 20)
 
                 Button {
-                    print("Done")
+                    favoriteViewModel.addToFavorite(place: place)
                 } label: {
                     Text("Add to Favorite")
                         .foregroundStyle(.whiteJG)
@@ -102,4 +103,5 @@ struct PlaceDetailView: View {
 
 #Preview {
     PlaceDetailView(place: Place.mock)
+        .environmentObject(FavoriteViewModel(repository: CoreDataManager()))
 }
