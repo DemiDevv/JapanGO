@@ -32,7 +32,7 @@ struct RootView: View {
                 case .favorite:
                     FavoriteView()
                 case .profile:
-                    ProfileView()
+                    MapView()
                 }
             }
 

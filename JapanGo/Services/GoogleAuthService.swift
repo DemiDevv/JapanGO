@@ -10,12 +10,6 @@ import GoogleSignIn
 import Firebase
 import UIKit
 
-enum AuthError: Error {
-    case missingClientID
-    case missingRootViewController
-    case missingToken
-}
-
 @MainActor
 final class GoogleAuthService {
 

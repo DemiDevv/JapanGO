@@ -7,12 +7,14 @@
 
 import Foundation
 import FirebaseAuth
+import AuthenticationServices
 import Combine
 
 @MainActor
 final class AuthViewModel: ObservableObject {
 
     private let googleAuthService = GoogleAuthService()
+    private let appleAuthService = AppleAuthService()
 
     @Published var isLoggedIn: Bool = false
     @Published var userName: String = ""
@@ -30,6 +32,24 @@ final class AuthViewModel: ObservableObject {
             let user = try await googleAuthService.signIn()
             setUser(user: user)
         } catch {
+            print(error)
+        }
+    }
+
+    func generateAppleNonce() -> String {
+        appleAuthService.generateNonce()
+    }
+
+    func signInWithApple(result: Result<ASAuthorization, Error>) async {
+        switch result {
+        case .success(let authorization):
+            do {
+                let user = try await appleAuthService.signIn(with: authorization)
+                setUser(user: user)
+            } catch {
+                print(error)
+            }
+        case .failure(let error):
             print(error)
         }
     }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GoogleSignInSwift
+import AuthenticationServices
 
 struct LoginView: View {
 
@@ -24,7 +25,19 @@ struct LoginView: View {
 
                 Text("Explore Japan effortlessly")
 
-                VStack {
+                VStack(spacing: 12) {
+                    SignInWithAppleButton(.signIn) { request in
+                        request.requestedScopes = [.fullName, .email]
+                        request.nonce = authViewModel.generateAppleNonce()
+                    } onCompletion: { result in
+                        Task {
+                            await authViewModel.signInWithApple(result: result)
+                        }
+                    }
+                    .signInWithAppleButtonStyle(.white)
+                    .frame(height: 50)
+                    .cornerRadius(12)
+
                     Button {
                         Task {
                             await authViewModel.signIn()
@@ -35,18 +48,19 @@ struct LoginView: View {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                             Text("Sign in with Google")
-                                .font(.system(size: 16, weight: .medium))
+                                .font(.system(size: 20, weight: .medium))
                         }
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
                         .background(Color.white)
-                        .foregroundColor(.black.opacity(0.54))
+                        .foregroundColor(.black)
                         .cornerRadius(12)
                     }
                 }
                 .padding(24)
                 .background(Color.black.opacity(0.3))
                 .cornerRadius(20)
+                .padding(20)
             }
             .foregroundStyle(.whiteJG)
 
