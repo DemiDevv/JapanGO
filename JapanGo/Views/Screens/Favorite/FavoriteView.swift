@@ -11,25 +11,30 @@ struct FavoriteView: View {
     @EnvironmentObject var favoriteViewModel: FavoriteViewModel
 
     var body: some View {
-        VStack {
-            Text("Favorite Places")
+        ZStack {
+            Color.blackJG.ignoresSafeArea()
 
-            List {
-                ForEach(favoriteViewModel.favoritePlaces) { place in
-                    FavoriteCardView(place: place)
-                        .swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                favoriteViewModel.removeFromFavorite(id: place.id)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
+            VStack {
+                Text("Favorite Places")
+                    .foregroundStyle(.whiteJG)
+
+                List {
+                    ForEach(favoriteViewModel.favoritePlaces) { place in
+                        FavoriteCardView(place: place)
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    favoriteViewModel.removeFromFavorite(id: place.id)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
                             }
-                        }
+                    }
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             }
-            .listStyle(.plain)
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-
         }
     }
 }

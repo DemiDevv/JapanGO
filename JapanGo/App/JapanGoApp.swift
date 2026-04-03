@@ -15,6 +15,8 @@ struct JapanGoApp: App {
     init() {
         FirebaseApp.configure()
         StringArrayTransformer.register()
+
+        UIWindow.appearance().backgroundColor = .blackJG
     }
 
     @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())

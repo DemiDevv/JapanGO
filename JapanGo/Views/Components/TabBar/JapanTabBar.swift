@@ -46,7 +46,7 @@ struct JapanTabBar: View {
                 .foregroundStyle(.blackGrayJG)
         )
         .padding(.horizontal, 16)
-        .padding(.bottom, 24)
+        .padding(.bottom, 0)
     }
 }
 

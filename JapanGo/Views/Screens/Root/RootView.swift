@@ -32,7 +32,7 @@ struct RootView: View {
                 case .favorite:
                     FavoriteView()
                 case .profile:
-                    MapView()
+                    ProfileView(path: $profilePath)
                 }
             }
 
@@ -47,10 +47,4 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.5), value: isTabBarHidden)
         .background(.blackJG)
     }
-}
-
-#Preview {
-    @Previewable @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
-    RootView()
-        .environmentObject(favoriteViewModel)
 }
