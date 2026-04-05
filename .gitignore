@@ -1,5 +1,6 @@
 # Secrets
 GoogleService-Info.plist
+Secrets.plist
 *.p8
 *.p12
 *.pem
