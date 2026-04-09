@@ -26,6 +26,7 @@ struct JapanGoApp: App {
         UIWindow.appearance().backgroundColor = .blackJG
     }
 
+    @StateObject var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
     @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
     @StateObject var authViewModel = AuthViewModel()
 
@@ -43,6 +44,7 @@ struct JapanGoApp: App {
             }
             .environmentObject(authViewModel)
             .environmentObject(favoriteViewModel)
+            .environmentObject(exploreViewModel)
         }
     }
 }

@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MapView: View {
+
+    @EnvironmentObject var exploreViewModel: ExploreViewModel
+
     var body: some View {
         VStack {
-            GoogleMapView()
+            GoogleMapView(places: exploreViewModel.places)
         }
         .ignoresSafeArea()
         .background(.blackJG)
@@ -18,5 +22,7 @@ struct MapView: View {
 }
 
 #Preview {
+    @Previewable @StateObject var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
     MapView()
+        .environmentObject(exploreViewModel)
 }

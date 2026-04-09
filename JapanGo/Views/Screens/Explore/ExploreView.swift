@@ -11,7 +11,7 @@ import Kingfisher
 struct ExploreView: View {
 
     @Binding var path: NavigationPath
-    @StateObject private var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
+    @EnvironmentObject var exploreViewModel: ExploreViewModel
     @EnvironmentObject var favoriteViewModel: FavoriteViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
 
@@ -138,10 +138,12 @@ struct ExploreView: View {
 #Preview {
     @Previewable @StateObject var favoriteViewModel = FavoriteViewModel(repository: CoreDataManager())
     @Previewable @StateObject var authViewModel = AuthViewModel()
+    @Previewable @StateObject var exploreViewModel = ExploreViewModel(service: LocalPlaceService())
 
     @Previewable @State var explorePath = NavigationPath()
 
     ExploreView(path: $explorePath)
         .environmentObject(favoriteViewModel)
         .environmentObject(authViewModel)
+        .environmentObject(exploreViewModel)
 }
