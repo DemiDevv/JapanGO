@@ -70,7 +70,7 @@ extension Place {
         addressJP: "京都市伏見区深草藪之内町68",
         city: "Kyoto",
         region: "Kansai",
-        imageURLs: ["https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800", "https://images.unsplash.com/photo-1614865816782-82e0a9b2a5e7?w=800", "https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=800"],
+        imageURLs: ["https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=800", "https://images.unsplash.com/photo-1614865816782-82e0a9b2a5e7?w=800", "https://images.unsplash.com/photo-1570459027562-4a916cc6113f?w=800"],
         price: "Free",
         hours: "24/7",
         closedDays: nil,

@@ -44,6 +44,7 @@ struct GoogleMapView: UIViewRepresentable {
         for place in places {
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude)
+            marker.iconView = MarkerIconView(place: place)
             marker.map = uiView
         }
     }
