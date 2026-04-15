@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import GoogleSignIn
 import GoogleMaps
+import GooglePlaces
 
 @main
 struct JapanGoApp: App {
@@ -21,6 +22,7 @@ struct JapanGoApp: App {
            let dict = NSDictionary(contentsOfFile: path),
            let apiKey = dict["GOOGLE_MAPS_API_KEY"] as? String {
             GMSServices.provideAPIKey(apiKey)
+            GMSPlacesClient.provideAPIKey(apiKey)
         }
 
         UIWindow.appearance().backgroundColor = .blackJG

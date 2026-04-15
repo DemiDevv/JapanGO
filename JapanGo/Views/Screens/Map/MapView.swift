@@ -11,13 +11,17 @@ import Combine
 struct MapView: View {
 
     @EnvironmentObject var exploreViewModel: ExploreViewModel
+    @State var selectedPlace: Place?
 
     var body: some View {
         VStack {
-            GoogleMapView(places: exploreViewModel.places)
+            GoogleMapView(places: exploreViewModel.places, selectedPlace: $selectedPlace)
         }
         .ignoresSafeArea()
         .background(.blackJG)
+        .fullScreenCover(item: $selectedPlace) { place in
+            PlaceDetailView(place: place)
+        }
     }
 }
 

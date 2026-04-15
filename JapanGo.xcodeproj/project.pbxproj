@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		300437582F900BE800A13DD3 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = 300437572F900BE800A13DD3 /* GooglePlaces */; };
+		3004375A2F900BE800A13DD3 /* GooglePlacesSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 300437592F900BE800A13DD3 /* GooglePlacesSwift */; };
 		30845FDD2F82E46000E0CB76 /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 30845FDC2F82E46000E0CB76 /* GoogleMaps */; };
 		30B40ED92F7EDAD0000E537F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 30B40ED82F7EDAD0000E537F /* FirebaseAuth */; };
 		30B40EDB2F7EDAD0000E537F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 30B40EDA2F7EDAD0000E537F /* FirebaseFirestore */; };
@@ -47,6 +49,8 @@
 			files = (
 				30B40EE42F7EDCBA000E537F /* GoogleSignInSwift in Frameworks */,
 				30B957332F6479A700E4C248 /* Kingfisher in Frameworks */,
+				300437582F900BE800A13DD3 /* GooglePlaces in Frameworks */,
+				3004375A2F900BE800A13DD3 /* GooglePlacesSwift in Frameworks */,
 				30845FDD2F82E46000E0CB76 /* GoogleMaps in Frameworks */,
 				30B40EE22F7EDCBA000E537F /* GoogleSignIn in Frameworks */,
 				30B40ED92F7EDAD0000E537F /* FirebaseAuth in Frameworks */,
@@ -99,6 +103,8 @@
 				30B40EE12F7EDCBA000E537F /* GoogleSignIn */,
 				30B40EE32F7EDCBA000E537F /* GoogleSignInSwift */,
 				30845FDC2F82E46000E0CB76 /* GoogleMaps */,
+				300437572F900BE800A13DD3 /* GooglePlaces */,
+				300437592F900BE800A13DD3 /* GooglePlacesSwift */,
 			);
 			productName = JapanGo;
 			productReference = 307E6E512F5A003B00FB964E /* JapanGo.app */;
@@ -133,6 +139,7 @@
 				30B40ED72F7EDAD0000E537F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				30B40EE02F7EDCBA000E537F /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				30845FDB2F82E46000E0CB76 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
+				300437562F900BE800A13DD3 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 307E6E522F5A003B00FB964E /* Products */;
@@ -386,6 +393,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		300437562F900BE800A13DD3 /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.12.0;
+			};
+		};
 		30845FDB2F82E46000E0CB76 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
@@ -421,6 +436,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		300437572F900BE800A13DD3 /* GooglePlaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 300437562F900BE800A13DD3 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlaces;
+		};
+		300437592F900BE800A13DD3 /* GooglePlacesSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 300437562F900BE800A13DD3 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlacesSwift;
+		};
 		30845FDC2F82E46000E0CB76 /* GoogleMaps */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 30845FDB2F82E46000E0CB76 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;

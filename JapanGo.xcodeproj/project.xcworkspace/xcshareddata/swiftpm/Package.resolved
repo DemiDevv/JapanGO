@@ -1,5 +1,5 @@
 {
-  "originHash" : "2a0d45b58a186925539ba7288755a98ff9c6d0f690a71fac34601e9038603331",
+  "originHash" : "a0879230cb169a32b3cc8f68a1cf92320c96ec28821ecaaf9a0ed968b34ec4d0",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -125,6 +125,15 @@
       "state" : {
         "revision" : "037b29b55ee9ac4d93b6a686b292e75ba4c50fe5",
         "version" : "10.10.0"
+      }
+    },
+    {
+      "identity" : "ios-places-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googlemaps/ios-places-sdk",
+      "state" : {
+        "revision" : "9458e07c99552af5ee5b722b491fe887cd5e5cea",
+        "version" : "10.12.0"
       }
     },
     {

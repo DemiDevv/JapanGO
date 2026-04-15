@@ -12,6 +12,11 @@ import Combine
 struct GoogleMapView: UIViewRepresentable {
 
     let places: [Place]
+    @Binding var selectedPlace: Place?
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
 
     func makeUIView(context: Context) -> GMSMapView {
         let options = GMSMapViewOptions()
@@ -21,20 +26,12 @@ struct GoogleMapView: UIViewRepresentable {
         let northEast = CLLocationCoordinate2D(latitude: 46.0, longitude: 146.0)
         mapView.cameraTargetBounds = GMSCoordinateBounds(coordinate: southWest, coordinate: northEast)
         mapView.setMinZoom(6.0, maxZoom: 18)
+        mapView.delegate = context.coordinator
 
-//        let markerView = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-//        markerView.backgroundColor = .white
-//        markerView.layer.cornerRadius = 12
-
-//        let label = UILabel(frame: markerView.bounds)
-//        label.text = "Tokyo"
-//        label.textAlignment = .center
-//        markerView.addSubview(label)
-
-//        let marker = GMSMarker()
-//        marker.position = CLLocationCoordinate2D(latitude: 35.6895, longitude: 139.6917)
-//        marker.iconView = markerView
-//        marker.map = mapView
+        if let styleURL = Bundle.main.url(forResource: "MapStyle", withExtension: "json"),
+           let style = try? GMSMapStyle(contentsOfFileURL: styleURL) {
+            mapView.mapStyle = style
+        }
 
         return mapView
     }
@@ -45,11 +42,23 @@ struct GoogleMapView: UIViewRepresentable {
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude)
             marker.iconView = MarkerIconView(place: place)
+            marker.userData = place
             marker.map = uiView
         }
     }
-}
 
-#Preview {
-    GoogleMapView(places: Place.mockArray)
+    //MARK: - Coordinator
+    final class Coordinator: NSObject, GMSMapViewDelegate {
+        private let parent: GoogleMapView
+
+        init(parent: GoogleMapView) {
+            self.parent = parent
+        }
+
+        func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+            guard let place = marker.userData as? Place else { return false }
+            parent.selectedPlace = place
+            return true
+        }
+    }
 }
