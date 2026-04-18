@@ -13,6 +13,7 @@ struct GoogleMapView: UIViewRepresentable {
 
     let places: [Place]
     @Binding var selectedPlace: Place?
+    var encodedPolyline: String?
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -38,12 +39,25 @@ struct GoogleMapView: UIViewRepresentable {
 
     func updateUIView(_ uiView: GMSMapView, context: Context) {
         uiView.clear()
+
         for place in places {
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude)
             marker.iconView = MarkerIconView(place: place)
             marker.userData = place
             marker.map = uiView
+        }
+
+        if let encodedPolyline,
+           let path = GMSPath(fromEncodedPath: encodedPolyline) {
+            let polyline = GMSPolyline(path: path)
+            polyline.strokeWidth = 4
+            polyline.strokeColor = UIColor(named: "RedJG") ?? .red
+            polyline.map = uiView
+
+            let bounds = GMSCoordinateBounds(path: path)
+            let update = GMSCameraUpdate.fit(bounds, withPadding: 60)
+            uiView.animate(with: update)
         }
     }
 

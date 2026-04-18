@@ -40,11 +40,15 @@ final class RouteBuilderViewModel: ObservableObject {
     @Published var routePolyline: String?
     @Published var travelMode: TravelMode = .walking
     @Published var isSearching = false
+    @Published var isBuildingRoute = false
+    @Published var routeError: String?
 
     private let placesClient = GMSPlacesClient.shared()
+    private let directionsService: DirectionsService
     var cancellables = Set<AnyCancellable>()
 
-    init() {
+    init(directionsService: DirectionsService = DirectionsService()) {
+        self.directionsService = directionsService
         $searchText
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .removeDuplicates()
@@ -122,6 +126,28 @@ final class RouteBuilderViewModel: ObservableObject {
     }
 
     func buildRoute() {
+        guard canBuildRoute else { return }
 
+        isBuildingRoute = true
+        routeError = nil
+
+        Task {
+            do {
+                let route = try await directionsService.fetchRoute(
+                    stops: selectedStops,
+                    mode: travelMode
+                )
+                routePolyline = route.polyline
+            } catch {
+                let nsError = error as NSError
+                print("❌ Directions error:")
+                print("  Domain: \(nsError.domain)")
+                print("  Code: \(nsError.code)")
+                print("  Description: \(nsError.localizedDescription)")
+                print("  UserInfo: \(nsError.userInfo)")
+                routeError = "Failed to build route"
+            }
+            isBuildingRoute = false
+        }
     }
 }

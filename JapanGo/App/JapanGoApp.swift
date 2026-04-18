@@ -18,12 +18,9 @@ struct JapanGoApp: App {
         FirebaseApp.configure()
         StringArrayTransformer.register()
 
-        if let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
-           let dict = NSDictionary(contentsOfFile: path),
-           let apiKey = dict["GOOGLE_MAPS_API_KEY"] as? String {
-            GMSServices.provideAPIKey(apiKey)
-            GMSPlacesClient.provideAPIKey(apiKey)
-        }
+        let apiKey = Configuration.googleMapsAPIKey
+        GMSServices.provideAPIKey(apiKey)
+        GMSPlacesClient.provideAPIKey(apiKey)
 
         UIWindow.appearance().backgroundColor = .blackJG
     }

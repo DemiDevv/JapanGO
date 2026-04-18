@@ -15,6 +15,8 @@ struct RouteBuilderView: View {
     @StateObject var routeBuilderViewModel = RouteBuilderViewModel()
     @Environment(\.dismiss) private var dismiss
 
+    var onRouteBuilt: ((String) -> Void)?
+
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
@@ -243,25 +245,36 @@ struct RouteBuilderView: View {
         Button {
             routeBuilderViewModel.buildRoute()
         } label: {
-            Text("Build Route")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(.whiteJG)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(
-                    Capsule()
-                        .fill(
-                            routeBuilderViewModel.canBuildRoute
-                            ? LinearGradient(colors: [.redJG, .blackGrayJG, .redJG],
-                                             startPoint: .topLeading,
-                                             endPoint: .bottomTrailing)
-                            : LinearGradient(colors: [.blackGrayJG, .blackGrayJG],
-                                             startPoint: .topLeading,
-                                             endPoint: .bottomTrailing)
-                        )
-                )
+            HStack(spacing: 8) {
+                if routeBuilderViewModel.isBuildingRoute {
+                    ProgressView()
+                        .tint(.whiteJG)
+                }
+                Text(routeBuilderViewModel.isBuildingRoute ? "Building..." : "Build Route")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.whiteJG)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(
+                Capsule()
+                    .fill(
+                        routeBuilderViewModel.canBuildRoute
+                        ? LinearGradient(colors: [.redJG, .blackGrayJG, .redJG],
+                                         startPoint: .topLeading,
+                                         endPoint: .bottomTrailing)
+                        : LinearGradient(colors: [.blackGrayJG, .blackGrayJG],
+                                         startPoint: .topLeading,
+                                         endPoint: .bottomTrailing)
+                    )
+            )
         }
-        .disabled(!routeBuilderViewModel.canBuildRoute)
+        .disabled(!routeBuilderViewModel.canBuildRoute || routeBuilderViewModel.isBuildingRoute)
+        .onChange(of: routeBuilderViewModel.routePolyline) { _, polyline in
+            guard let polyline else { return }
+            onRouteBuilt?(polyline)
+            dismiss()
+        }
     }
 }
 

@@ -14,11 +14,12 @@ struct MapView: View {
     @EnvironmentObject var exploreViewModel: ExploreViewModel
     @State var selectedPlace: Place?
     @State private var showRouteBuilder = false
+    @State private var routePolyline: String?
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack {
-                GoogleMapView(places: exploreViewModel.places, selectedPlace: $selectedPlace)
+                GoogleMapView(places: exploreViewModel.places, selectedPlace: $selectedPlace, encodedPolyline: routePolyline)
             }
             .ignoresSafeArea()
 
@@ -40,8 +41,10 @@ struct MapView: View {
             PlaceDetailView(place: place)
         }
         .fullScreenCover(isPresented: $showRouteBuilder) {
-            RouteBuilderView(path: $path)
-                .environmentObject(exploreViewModel)
+            RouteBuilderView(path: $path) { polyline in
+                routePolyline = polyline
+            }
+            .environmentObject(exploreViewModel)
         }
     }
 }
