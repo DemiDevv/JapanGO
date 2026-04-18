@@ -28,7 +28,7 @@ struct RootView: View {
                 case .home:
                     ExploreView(path: $explorePath)
                 case .map:
-                    MapView()
+                    MapView(path: $mapPath)
                 case .favorite:
                     FavoriteView()
                 case .profile:
