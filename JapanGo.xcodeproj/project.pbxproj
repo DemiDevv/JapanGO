@@ -18,8 +18,19 @@
 		30B957332F6479A700E4C248 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 30B957322F6479A700E4C248 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		307209812FBB8E460057C923 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 307E6E492F5A003B00FB964E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 307E6E502F5A003B00FB964E;
+			remoteInfo = JapanGo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		307209772FBB8B630057C923 /* AllTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AllTests.xctestplan; sourceTree = "<group>"; };
+		3072097D2FBB8E460057C923 /* JapanGoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JapanGoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		307E6E512F5A003B00FB964E /* JapanGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JapanGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -34,6 +45,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		3072097E2FBB8E460057C923 /* JapanGoTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JapanGoTests;
+			sourceTree = "<group>";
+		};
 		307E6E532F5A003B00FB964E /* JapanGo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -45,6 +61,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3072097A2FBB8E460057C923 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		307E6E4E2F5A003B00FB964E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,6 +91,7 @@
 			children = (
 				307209772FBB8B630057C923 /* AllTests.xctestplan */,
 				307E6E532F5A003B00FB964E /* JapanGo */,
+				3072097E2FBB8E460057C923 /* JapanGoTests */,
 				307E6E522F5A003B00FB964E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -76,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				307E6E512F5A003B00FB964E /* JapanGo.app */,
+				3072097D2FBB8E460057C923 /* JapanGoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +108,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3072097C2FBB8E460057C923 /* JapanGoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 307209832FBB8E460057C923 /* Build configuration list for PBXNativeTarget "JapanGoTests" */;
+			buildPhases = (
+				307209792FBB8E460057C923 /* Sources */,
+				3072097A2FBB8E460057C923 /* Frameworks */,
+				3072097B2FBB8E460057C923 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				307209822FBB8E460057C923 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3072097E2FBB8E460057C923 /* JapanGoTests */,
+			);
+			name = JapanGoTests;
+			packageProductDependencies = (
+			);
+			productName = JapanGoTests;
+			productReference = 3072097D2FBB8E460057C923 /* JapanGoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		307E6E502F5A003B00FB964E /* JapanGo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 307E6E5C2F5A003C00FB964E /* Build configuration list for PBXNativeTarget "JapanGo" */;
@@ -120,9 +168,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2600;
+				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					3072097C2FBB8E460057C923 = {
+						CreatedOnToolsVersion = 26.4.1;
+						TestTargetID = 307E6E502F5A003B00FB964E;
+					};
 					307E6E502F5A003B00FB964E = {
 						CreatedOnToolsVersion = 26.0;
 					};
@@ -150,11 +202,19 @@
 			projectRoot = "";
 			targets = (
 				307E6E502F5A003B00FB964E /* JapanGo */,
+				3072097C2FBB8E460057C923 /* JapanGoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3072097B2FBB8E460057C923 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		307E6E4F2F5A003B00FB964E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -166,6 +226,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		307209792FBB8E460057C923 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		307E6E4D2F5A003B00FB964E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -175,7 +242,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		307209822FBB8E460057C923 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 307E6E502F5A003B00FB964E /* JapanGo */;
+			targetProxy = 307209812FBB8E460057C923 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		307209842FBB8E460057C923 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D43J355YJK;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DemiDevv.JapanGoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JapanGo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JapanGo";
+			};
+			name = Debug;
+		};
+		307209852FBB8E460057C923 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D43J355YJK;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.DemiDevv.JapanGoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JapanGo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JapanGo";
+			};
+			name = Release;
+		};
 		307E6E5A2F5A003C00FB964E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -376,6 +495,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		307209832FBB8E460057C923 /* Build configuration list for PBXNativeTarget "JapanGoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				307209842FBB8E460057C923 /* Debug */,
+				307209852FBB8E460057C923 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		307E6E4C2F5A003B00FB964E /* Build configuration list for PBXProject "JapanGo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
