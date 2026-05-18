@@ -12,7 +12,13 @@
     "testTimeoutsEnabled" : true
   },
   "testTargets" : [
-
+    {
+      "target" : {
+        "containerPath" : "container:JapanGo.xcodeproj",
+        "identifier" : "3072097C2FBB8E460057C923",
+        "name" : "JapanGoTests"
+      }
+    }
   ],
   "version" : 1
 }
