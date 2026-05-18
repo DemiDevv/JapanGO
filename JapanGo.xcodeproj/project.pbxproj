@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		300437582F900BE800A13DD3 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = 300437572F900BE800A13DD3 /* GooglePlaces */; };
 		3004375A2F900BE800A13DD3 /* GooglePlacesSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 300437592F900BE800A13DD3 /* GooglePlacesSwift */; };
+		307209782FBB8B630057C923 /* AllTests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 307209772FBB8B630057C923 /* AllTests.xctestplan */; };
 		30845FDD2F82E46000E0CB76 /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 30845FDC2F82E46000E0CB76 /* GoogleMaps */; };
 		30B40ED92F7EDAD0000E537F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 30B40ED82F7EDAD0000E537F /* FirebaseAuth */; };
 		30B40EDB2F7EDAD0000E537F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 30B40EDA2F7EDAD0000E537F /* FirebaseFirestore */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		307209772FBB8B630057C923 /* AllTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AllTests.xctestplan; sourceTree = "<group>"; };
 		307E6E512F5A003B00FB964E /* JapanGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JapanGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -64,6 +66,7 @@
 		307E6E482F5A003B00FB964E = {
 			isa = PBXGroup;
 			children = (
+				307209772FBB8B630057C923 /* AllTests.xctestplan */,
 				307E6E532F5A003B00FB964E /* JapanGo */,
 				307E6E522F5A003B00FB964E /* Products */,
 			);
@@ -156,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				307209782FBB8B630057C923 /* AllTests.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
