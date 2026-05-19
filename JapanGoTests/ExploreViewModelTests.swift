@@ -15,20 +15,20 @@ struct ExploreViewModelTests {
     func returnsAllPlacesWhenCategoryIsNotSelected() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = TestPlaces.items
+        viewModel.places = Place.testItems
 
         // When
         let result = viewModel.filteredPlaces
 
         // Then
-        #expect(result.count == TestPlaces.items.count)
+        #expect(result.count == Place.testItems.count)
     }
 
     @Test
     func filtersPlacesBySelectedCategory() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = TestPlaces.items
+        viewModel.places = Place.testItems
 
         // When
         viewModel.selectedCategory = "temples"
@@ -43,7 +43,7 @@ struct ExploreViewModelTests {
     func filtersPlacesBySearchText() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = TestPlaces.items
+        viewModel.places = Place.testItems
 
         // When
         viewModel.searchText = "fuji"
@@ -58,7 +58,7 @@ struct ExploreViewModelTests {
     func limitsPreviewPlacesToTen() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = TestPlaces.manyItems
+        viewModel.places = Place.testManyItems
 
         // When
         let result = viewModel.previewPlaces
@@ -68,24 +68,18 @@ struct ExploreViewModelTests {
     }
 }
 
-private struct MockPlaceService: PlaceService {
-    func getPlaces() async throws -> PlaceData {
-        PlaceData(categories: [], regions: [], places: [])
-    }
-}
-
-private enum TestPlaces {
-    static let items = [
-        makePlace(id: "1", name: "Fushimi Inari Taisha", category: "temples"),
-        makePlace(id: "2", name: "Senso-ji Temple", category: "temples"),
-        makePlace(id: "3", name: "Mount Fuji", category: "nature")
+private extension Place {
+    static let testItems = [
+        testPlace(id: "1", name: "Fushimi Inari Taisha", category: "temples"),
+        testPlace(id: "2", name: "Senso-ji Temple", category: "temples"),
+        testPlace(id: "3", name: "Mount Fuji", category: "nature")
     ]
 
-    static let manyItems = (1...12).map {
-        makePlace(id: "\($0)", name: "Place \($0)", category: "temples")
+    static let testManyItems = (1...12).map {
+        testPlace(id: "\($0)", name: "Place \($0)", category: "temples")
     }
 
-    private static func makePlace(
+    static func testPlace(
         id: String,
         name: String,
         category: String
