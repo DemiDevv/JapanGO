@@ -12,77 +12,109 @@ import Testing
 struct ExploreViewModelTests {
 
     @Test
-    func returnsAllPlacesWhenCategoryIsNotSelected() {
+    func returnsAllPlacesByDefault() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = Place.testItems
+        let places = Place.testPlaces(count: 3)
+        viewModel.places = places
 
         // When
         let result = viewModel.filteredPlaces
 
         // Then
-        #expect(result.count == Place.testItems.count)
+        #expect(result == places)
+    }
+
+    @Test
+    func returnsAllPlacesWhenCategoryIsNil() {
+        // Given
+        let viewModel = ExploreViewModel(service: MockPlaceService())
+        let places = Place.testPlaces(count: 3)
+        viewModel.places = places
+
+        // When
+        viewModel.selectedCategory = "temples"
+        viewModel.selectedCategory = nil
+        let result = viewModel.filteredPlaces
+
+        // Then
+        #expect(result == places)
     }
 
     @Test
     func filtersPlacesBySelectedCategory() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = Place.testItems
+        let templePlaces = Place.testPlaces(count: 3, category: "temples")
+        let naturePlaces = Place.testPlaces(count: 2, category: "nature")
+        viewModel.places = templePlaces + naturePlaces
 
         // When
         viewModel.selectedCategory = "temples"
         let result = viewModel.filteredPlaces
 
         // Then
-        #expect(result.count == 2)
-        #expect(result.allSatisfy { $0.category == "temples" })
+        #expect(result == templePlaces)
     }
 
     @Test
     func filtersPlacesBySearchText() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = Place.testItems
+        let expectedPlace = Place.testPlace(id: "1", name: "Mount Fuji")
+        viewModel.places = [
+            expectedPlace,
+            .testPlace(id: "2", name: "Senso-ji Temple"),
+            .testPlace(id: "3", name: "Fushimi Inari Taisha")
+        ]
 
         // When
         viewModel.searchText = "fuji"
         let result = viewModel.filteredPlaces
 
         // Then
-        #expect(result.count == 1)
-        #expect(result.first?.name == "Mount Fuji")
+        #expect(result == [expectedPlace])
     }
 
-    @Test
-    func limitsPreviewPlacesToTen() {
+    @Test(arguments: [
+        (placesCount: 0, expectedCount: 0),
+        (placesCount: 1, expectedCount: 1),
+        (placesCount: 10, expectedCount: 10),
+        (placesCount: 11, expectedCount: 10),
+        (placesCount: 100, expectedCount: 10)
+    ])
+    func limitsPreviewPlacesToTen(
+        placesCount: Int,
+        expectedCount: Int
+    ) {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        viewModel.places = Place.testManyItems
+        viewModel.places = Place.testPlaces(count: placesCount)
 
         // When
         let result = viewModel.previewPlaces
 
         // Then
-        #expect(result.count == 10)
+        #expect(result.count == expectedCount)
     }
 }
 
 private extension Place {
-    static let testItems = [
-        testPlace(id: "1", name: "Fushimi Inari Taisha", category: "temples"),
-        testPlace(id: "2", name: "Senso-ji Temple", category: "temples"),
-        testPlace(id: "3", name: "Mount Fuji", category: "nature")
-    ]
+    static func testPlaces(
+        count: Int,
+        category: String = "temples"
+    ) -> [Place] {
+        guard count > 0 else { return [] }
 
-    static let testManyItems = (1...12).map {
-        testPlace(id: "\($0)", name: "Place \($0)", category: "temples")
+        return (1...count).map {
+            testPlace(id: "\($0)", name: "Place \($0)", category: category)
+        }
     }
 
     static func testPlace(
         id: String,
         name: String,
-        category: String
+        category: String = "temples"
     ) -> Place {
         Place(
             id: id,
