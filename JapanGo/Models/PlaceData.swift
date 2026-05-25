@@ -13,8 +13,18 @@ struct PlaceData: Decodable {
     let places: [Place]
 }
 
+enum PlaceCategory: String, Decodable, Hashable {
+    case temples
+    case food
+    case nature
+    case entertainment
+    case shopping
+    case culture
+    case viewpoints
+}
+
 struct CategoryInfo: Decodable, Identifiable {
-    let id: String
+    let id: PlaceCategory
     let nameEN: String
     let nameRU: String
     let icon: String
@@ -32,7 +42,7 @@ struct Place: Decodable, Identifiable, Hashable {
     let nameJP: String
     let descriptionEN: String
     let descriptionRU: String
-    let category: String
+    let category: PlaceCategory
     let rating: Double
     let latitude: Double
     let longitude: Double
@@ -62,7 +72,7 @@ extension Place {
         nameJP: "伏見稲荷大社",
         descriptionEN: "Iconic Shinto shrine with thousands of vermillion torii gates.",
         descriptionRU: "Знаменитое святилище с тысячами алых ворот тории.",
-        category: "temples",
+        category: .temples,
         rating: 4.8,
         latitude: 34.9671,
         longitude: 135.7727,
@@ -92,7 +102,7 @@ extension Place {
             nameJP: "浅草寺",
             descriptionEN: "Tokyo's oldest temple in Asakusa.",
             descriptionRU: "Старейший храм Токио в Асакуса.",
-            category: "temples",
+            category: .temples,
             rating: 4.7,
             latitude: 35.7148,
             longitude: 139.7967,
@@ -119,7 +129,7 @@ extension Place {
             nameJP: "金閣寺",
             descriptionEN: "Zen Buddhist temple covered in gold leaf, beautifully reflected in a mirror pond.",
             descriptionRU: "Дзен-буддийский храм, покрытый сусальным золотом, отражающийся в зеркальном пруду.",
-            category: "temples",
+            category: .temples,
             rating: 4.7,
             latitude: 35.0394,
             longitude: 135.7292,
@@ -149,7 +159,7 @@ extension Place {
             nameJP: "築地場外市場",
             descriptionEN: "Historic market area famous for fresh sushi, seafood, and Japanese street food.",
             descriptionRU: "Исторический рынок со свежими суши и уличной едой.",
-            category: "food",
+            category: .food,
             rating: 4.7,
             latitude: 35.6654,
             longitude: 139.7707,
@@ -179,7 +189,7 @@ extension Place {
             nameJP: "富士山",
             descriptionEN: "Japan's iconic sacred peak at 3,776m — UNESCO World Heritage and tallest mountain.",
             descriptionRU: "Культовая вершина Японии (3776 м) — ЮНЕСКО, высочайшая гора страны.",
-            category: "nature",
+            category: .nature,
             rating: 4.9,
             latitude: 35.3606,
             longitude: 138.7274,
@@ -208,7 +218,7 @@ extension Place {
 
 extension CategoryInfo {
     static let mock = CategoryInfo(
-        id: "temples",
+        id: .temples,
         nameEN: "Temples & Shrines",
         nameRU: "Храмы и святыни",
         icon: "⛩"
@@ -216,11 +226,12 @@ extension CategoryInfo {
 
     static let mockArray: [CategoryInfo] = [
         mock,
-        CategoryInfo(id: "food", nameEN: "Food & Cafes", nameRU: "Еда и кафе", icon: "🍜"),
-        CategoryInfo(id: "nature", nameEN: "Nature", nameRU: "Природа", icon: "🌿"),
-        CategoryInfo(id: "nature1", nameEN: "Nature", nameRU: "Природа", icon: "🌿"),
-        CategoryInfo(id: "nature2", nameEN: "Nature", nameRU: "Природа", icon: "🌿"),
-        CategoryInfo(id: "nature3", nameEN: "Nature", nameRU: "Природа", icon: "🌿")
+        CategoryInfo(id: .food, nameEN: "Food & Cafes", nameRU: "Еда и кафе", icon: "🍜"),
+        CategoryInfo(id: .nature, nameEN: "Nature", nameRU: "Природа", icon: "🌿"),
+        CategoryInfo(id: .entertainment, nameEN: "Entertainment", nameRU: "Развлечения", icon: "🎡"),
+        CategoryInfo(id: .shopping, nameEN: "Shopping", nameRU: "Шопинг", icon: "🛍"),
+        CategoryInfo(id: .culture, nameEN: "Culture", nameRU: "Культура", icon: "🏯"),
+        CategoryInfo(id: .viewpoints, nameEN: "Viewpoints", nameRU: "Смотровые площадки", icon: "🌆")
     ]
 }
 #endif
