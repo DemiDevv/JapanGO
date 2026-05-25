@@ -44,10 +44,10 @@ final class RouteBuilderViewModel: ObservableObject {
     @Published var routeError: String?
 
     private let placesClient = GMSPlacesClient.shared()
-    private let directionsService: DirectionsService
+    private let directionsService: DirectionsServiceProtocol
     var cancellables = Set<AnyCancellable>()
 
-    init(directionsService: DirectionsService = DirectionsService()) {
+    init(directionsService: DirectionsServiceProtocol = DirectionsService()) {
         self.directionsService = directionsService
         $searchText
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)

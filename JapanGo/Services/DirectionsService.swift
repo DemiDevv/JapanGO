@@ -21,7 +21,11 @@ struct DirectionsRoute {
     let totalDistance: String
 }
 
-final class DirectionsService {
+protocol DirectionsServiceProtocol {
+    func fetchRoute(stops: [RouteStop], mode: TravelMode) async throws -> DirectionsRoute
+}
+
+final class DirectionsService: DirectionsServiceProtocol {
 
     private let apiKey: String
 
