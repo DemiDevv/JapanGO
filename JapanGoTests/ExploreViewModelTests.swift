@@ -33,7 +33,7 @@ struct ExploreViewModelTests {
         viewModel.places = places
 
         // When
-        viewModel.selectedCategory = "temples"
+        viewModel.selectedCategory = .temples
         viewModel.selectedCategory = nil
         let result = viewModel.filteredPlaces
 
@@ -45,12 +45,12 @@ struct ExploreViewModelTests {
     func filtersPlacesBySelectedCategory() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        let templePlaces = Place.testPlaces(count: 3, category: "temples")
-        let naturePlaces = Place.testPlaces(count: 2, category: "nature")
+        let templePlaces = Place.testPlaces(count: 3, category: .temples)
+        let naturePlaces = Place.testPlaces(count: 2, category: .nature)
         viewModel.places = templePlaces + naturePlaces
 
         // When
-        viewModel.selectedCategory = "temples"
+        viewModel.selectedCategory = .temples
         let result = viewModel.filteredPlaces
 
         // Then
@@ -102,7 +102,7 @@ struct ExploreViewModelTests {
 private extension Place {
     static func testPlaces(
         count: Int,
-        category: String = "temples"
+        category: PlaceCategory = .temples
     ) -> [Place] {
         guard count > 0 else { return [] }
 
@@ -114,7 +114,7 @@ private extension Place {
     static func testPlace(
         id: String,
         name: String,
-        category: String = "temples"
+        category: PlaceCategory = .temples
     ) -> Place {
         Place(
             id: id,
