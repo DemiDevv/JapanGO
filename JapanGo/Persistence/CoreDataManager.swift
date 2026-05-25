@@ -121,7 +121,7 @@ extension Place {
         entity.nameJP = nameJP
         entity.descriptionEN = descriptionEN
         entity.descriptionRU = descriptionRU
-        entity.category = category
+        entity.category = category.rawValue
         entity.rating = rating
         entity.latitude = latitude
         entity.longitude = longitude
@@ -155,7 +155,7 @@ extension PlaceEntity {
             nameJP: nameJP ?? "",
             descriptionEN: descriptionEN ?? "",
             descriptionRU: descriptionRU ?? "",
-            category: category ?? "",
+            category: PlaceCategory(rawValue: category ?? "") ?? .temples,
             rating: rating,
             latitude: latitude,
             longitude: longitude,
