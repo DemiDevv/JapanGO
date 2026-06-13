@@ -15,7 +15,11 @@ struct ExploreViewModelTests {
     func returnsAllPlacesByDefault() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        let places = Place.testPlaces(count: 3)
+        let places = [
+            Place.testPlace(id: "1", name: "Temple", category: .temples),
+            Place.testPlace(id: "2", name: "Mountain", category: .nature),
+            Place.testPlace(id: "3", name: "Restaurant", category: .food)
+        ]
         viewModel.places = places
 
         // When
@@ -29,7 +33,11 @@ struct ExploreViewModelTests {
     func returnsAllPlacesWhenCategoryIsNil() {
         // Given
         let viewModel = ExploreViewModel(service: MockPlaceService())
-        let places = Place.testPlaces(count: 3)
+        let places = [
+            Place.testPlace(id: "1", name: "Temple", category: .temples),
+            Place.testPlace(id: "2", name: "Mountain", category: .nature),
+            Place.testPlace(id: "3", name: "Restaurant", category: .food)
+        ]
         viewModel.places = places
 
         // When
