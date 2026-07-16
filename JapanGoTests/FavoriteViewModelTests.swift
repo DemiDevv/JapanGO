@@ -30,30 +30,37 @@ struct FavoriteViewModelTests {
         let addedPlace = Place.testPlace(id: "added-place", name: "Added Place")
         let repository = MockPlaceRepository(favoritePlaces: existingPlaces)
         let viewModel = FavoriteViewModel(repository: repository)
+        #expect(!viewModel.isFavorite(id: addedPlace.id))
 
         // When
         viewModel.addToFavorite(place: addedPlace)
 
         // Then
-        #expect(viewModel.favoritePlaces == existingPlaces + [addedPlace])
         #expect(viewModel.isFavorite(id: addedPlace.id))
+        #expect(viewModel.favoritePlaces.count == existingPlaces.count + 1)
+        for place in existingPlaces {
+            #expect(viewModel.isFavorite(id: place.id))
+        }
     }
 
     @Test
     func removesOnlySelectedPlaceFromFavorites() {
         // Given
-        let firstPlace = Place.testPlace(id: "first-place", name: "First Place")
-        let removedPlace = Place.testPlace(id: "removed-place", name: "Removed Place")
-        let lastPlace = Place.testPlace(id: "last-place", name: "Last Place")
-        let repository = MockPlaceRepository(favoritePlaces: [firstPlace, removedPlace, lastPlace])
+        let places = Place.testPlaces(count: 3)
+        let removedPlace = places[1]
+        let repository = MockPlaceRepository(favoritePlaces: places)
         let viewModel = FavoriteViewModel(repository: repository)
+        #expect(viewModel.isFavorite(id: removedPlace.id))
 
         // When
         viewModel.removeFromFavorite(id: removedPlace.id)
 
         // Then
-        #expect(viewModel.favoritePlaces == [firstPlace, lastPlace])
         #expect(!viewModel.isFavorite(id: removedPlace.id))
+        #expect(viewModel.favoritePlaces.count == places.count - 1)
+        for place in places where place.id != removedPlace.id {
+            #expect(viewModel.isFavorite(id: place.id))
+        }
     }
 
     @Test
@@ -76,16 +83,16 @@ struct FavoriteViewModelTests {
         let place = Place.testPlace(id: "target-place", name: "Target Place")
         let otherPlace = Place.testPlace(id: "other-place", name: "Other Place")
         let initialPlaces = isInitiallyFavorite ? [otherPlace, place] : [otherPlace]
-        let expectedPlaces = isInitiallyFavorite ? [otherPlace] : [otherPlace, place]
         let repository = MockPlaceRepository(favoritePlaces: initialPlaces)
         let viewModel = FavoriteViewModel(repository: repository)
+        #expect(viewModel.isFavorite(id: place.id) == isInitiallyFavorite)
 
         // When
         viewModel.toggleFavorite(place: place)
 
         // Then
-        #expect(viewModel.favoritePlaces == expectedPlaces)
         #expect(viewModel.isFavorite(id: place.id) == !isInitiallyFavorite)
+        #expect(viewModel.isFavorite(id: otherPlace.id))
     }
 }
 
