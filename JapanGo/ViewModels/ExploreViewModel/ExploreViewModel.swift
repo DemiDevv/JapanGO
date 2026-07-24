@@ -14,7 +14,7 @@ final class ExploreViewModel: ObservableObject {
     @Published var places: [Place] = []
     @Published var categoryInfo: [CategoryInfo] = []
     @Published var isLoading: Bool = false
-    @Published var selectedCategory: String? = nil
+    @Published var selectedCategory: PlaceCategory? = nil
     @Published var searchText = ""
 
     var cancellables = Set<AnyCancellable>()
