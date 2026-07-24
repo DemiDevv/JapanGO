@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import GooglePlaces
 
 struct RouteBuilderView: View {
 
@@ -78,44 +77,42 @@ struct RouteBuilderView: View {
     private var searchResultsList: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                ForEach(routeBuilderViewModel.searchResults, id: \.self) { suggestion in
-                    if let placeSuggestion = suggestion.placeSuggestion {
-                        Button {
-                            routeBuilderViewModel.addStop(from: suggestion)
-                        } label: {
-                            HStack(spacing: 12) {
-                                Image(systemName: "mappin.circle.fill")
-                                    .font(.system(size: 24))
-                                    .foregroundStyle(.redJG)
+                ForEach(routeBuilderViewModel.searchResults) { suggestion in
+                    Button {
+                        routeBuilderViewModel.addStop(from: suggestion)
+                    } label: {
+                        HStack(spacing: 12) {
+                            Image(systemName: "mappin.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundStyle(.redJG)
 
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(placeSuggestion.attributedPrimaryText.string)
-                                        .font(.system(size: 16, weight: .medium))
-                                        .foregroundStyle(.whiteJG)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(suggestion.name)
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundStyle(.whiteJG)
+                                    .lineLimit(1)
+
+                                if !suggestion.address.isEmpty {
+                                    Text(suggestion.address)
+                                        .font(.system(size: 13))
+                                        .foregroundStyle(.grayJG)
                                         .lineLimit(1)
-
-                                    if let secondary = placeSuggestion.attributedSecondaryText {
-                                        Text(secondary.string)
-                                            .font(.system(size: 13))
-                                            .foregroundStyle(.grayJG)
-                                            .lineLimit(1)
-                                    }
                                 }
-
-                                Spacer()
-
-                                Image(systemName: "plus.circle")
-                                    .font(.system(size: 20))
-                                    .foregroundStyle(.creamJG)
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 12)
-                        }
 
-                        Divider()
-                            .background(Color.blackGrayJG)
-                            .padding(.leading, 56)
+                            Spacer()
+
+                            Image(systemName: "plus.circle")
+                                .font(.system(size: 20))
+                                .foregroundStyle(.creamJG)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
                     }
+
+                    Divider()
+                        .background(Color.blackGrayJG)
+                        .padding(.leading, 56)
                 }
             }
         }

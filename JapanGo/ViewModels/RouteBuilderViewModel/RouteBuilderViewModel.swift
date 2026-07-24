@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-import GooglePlaces
 
 enum TravelMode: String, CaseIterable {
     case walking
@@ -35,7 +34,7 @@ enum TravelMode: String, CaseIterable {
 final class RouteBuilderViewModel: ObservableObject {
 
     @Published var selectedStops: [RouteStop] = []
-    @Published var searchResults: [GMSAutocompleteSuggestion] = []
+    @Published var searchResults: [PlaceSuggestion] = []
     @Published var searchText = ""
     @Published var routePolyline: String?
     @Published var travelMode: TravelMode = .walking
@@ -43,12 +42,16 @@ final class RouteBuilderViewModel: ObservableObject {
     @Published var isBuildingRoute = false
     @Published var routeError: String?
 
-    private let placesClient = GMSPlacesClient.shared()
-    private let directionsService: DirectionsService
+    private let directionsService: DirectionsServiceProtocol
+    private let placesSearchService: PlacesSearchServiceProtocol
     var cancellables = Set<AnyCancellable>()
 
-    init(directionsService: DirectionsService = DirectionsService()) {
+    init(
+        directionsService: DirectionsServiceProtocol = DirectionsService(),
+        placesSearchService: PlacesSearchServiceProtocol = PlacesSearchService()
+    ) {
         self.directionsService = directionsService
+        self.placesSearchService = placesSearchService
         $searchText
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .removeDuplicates()
@@ -67,46 +70,30 @@ final class RouteBuilderViewModel: ObservableObject {
 
         isSearching = true
 
-        let filter = GMSAutocompleteFilter()
-        filter.countries = ["JP"]
-
-        let request = GMSAutocompleteRequest(query: query)
-        request.filter = filter
-
-        placesClient.fetchAutocompleteSuggestions(from: request) { [weak self] results, error in
-            guard let self else { return }
-            self.isSearching = false
-
-            if let error {
+        Task {
+            do {
+                searchResults = try await placesSearchService.searchPlaces(query: query)
+            } catch {
                 let nsError = error as NSError
                 print("❌ Places search error:")
                 print("  Domain: \(nsError.domain)")
                 print("  Code: \(nsError.code)")
                 print("  Description: \(nsError.localizedDescription)")
                 print("  UserInfo: \(nsError.userInfo)")
-                self.searchResults = []
-                return
+                searchResults = []
             }
-
-            guard let results else {
-                self.searchResults = []
-                return
-            }
-
-            self.searchResults = results
+            isSearching = false
         }
     }
 
-    func addStop(from suggestion: GMSAutocompleteSuggestion) {
-        guard let placeSuggestion = suggestion.placeSuggestion else { return }
+    func addStop(from suggestion: PlaceSuggestion) {
+        guard !selectedStops.contains(where: { $0.id == suggestion.id }) else { return }
 
-        let placeID = placeSuggestion.placeID
-        guard !selectedStops.contains(where: { $0.id == placeID }) else { return }
-
-        let name = placeSuggestion.attributedPrimaryText.string
-        let address = placeSuggestion.attributedSecondaryText?.string ?? ""
-
-        let stop = RouteStop(id: placeID, name: name, address: address)
+        let stop = RouteStop(
+            id: suggestion.id,
+            name: suggestion.name,
+            address: suggestion.address
+        )
         selectedStops.append(stop)
 
         searchText = ""
