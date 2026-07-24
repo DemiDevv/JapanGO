@@ -99,16 +99,17 @@ struct RouteBuilderViewModelTests {
     func removesOnlySelectedStop() {
         // Given
         let viewModel = RouteBuilderViewModel()
-        let firstStop = RouteStop.testStop(id: "first-stop", name: "First Stop")
-        let removedStop = RouteStop.testStop(id: "removed-stop", name: "Removed Stop")
-        let lastStop = RouteStop.testStop(id: "last-stop", name: "Last Stop")
-        viewModel.selectedStops = [firstStop, removedStop, lastStop]
+        let stops = RouteStop.testStops(count: 3)
+        let removedStop = stops[1]
+        viewModel.selectedStops = stops
+        #expect(viewModel.selectedStops.contains(removedStop))
 
         // When
         viewModel.removeStop(removedStop)
 
         // Then
-        #expect(viewModel.selectedStops == [firstStop, lastStop])
+        #expect(!viewModel.selectedStops.contains(removedStop))
+        #expect(viewModel.selectedStops.map(\.id) == [stops[0].id, stops[2].id])
     }
 
     @Test
@@ -142,7 +143,9 @@ struct RouteBuilderViewModelTests {
     @Test
     func clearsSearchStateForEmptyQuery() {
         // Given
-        let viewModel = RouteBuilderViewModel()
+        let searchService = MockPlacesSearchService(result: .success([]))
+        let viewModel = RouteBuilderViewModel(placesSearchService: searchService)
+        viewModel.searchResults = PlaceSuggestion.testSuggestions(count: 2)
         viewModel.isSearching = true
 
         // When
@@ -151,8 +154,78 @@ struct RouteBuilderViewModelTests {
         // Then
         #expect(viewModel.searchResults.isEmpty)
         #expect(!viewModel.isSearching)
+        #expect(searchService.receivedQueries.isEmpty)
+    }
+
+    @Test
+    func loadsSearchResultsForQuery() async {
+        // Given
+        let suggestions = PlaceSuggestion.testSuggestions(count: 2)
+        let searchService = MockPlacesSearchService(result: .success(suggestions))
+        let viewModel = RouteBuilderViewModel(placesSearchService: searchService)
+
+        // When
+        viewModel.searchPlaces(query: "Tokyo")
+        await viewModel.waitForSearch()
+
+        // Then
+        #expect(viewModel.searchResults == suggestions)
+        #expect(searchService.receivedQueries == ["Tokyo"])
+    }
+
+    @Test
+    func clearsSearchResultsWhenSearchFails() async {
+        // Given
+        let searchService = MockPlacesSearchService(result: .failure(TestError()))
+        let viewModel = RouteBuilderViewModel(placesSearchService: searchService)
+        viewModel.searchResults = PlaceSuggestion.testSuggestions(count: 2)
+
+        // When
+        viewModel.searchPlaces(query: "Tokyo")
+        await viewModel.waitForSearch()
+
+        // Then
+        #expect(viewModel.searchResults.isEmpty)
+        #expect(!viewModel.isSearching)
+    }
+
+    @Test
+    func addsStopFromSuggestionAndClearsSearchState() {
+        // Given
+        let searchService = MockPlacesSearchService(result: .success([]))
+        let viewModel = RouteBuilderViewModel(placesSearchService: searchService)
+        let suggestion = PlaceSuggestion.testSuggestion(id: "added-stop", name: "Added Stop")
+        viewModel.searchResults = [suggestion]
+        viewModel.searchText = "Added"
+        #expect(!viewModel.selectedStops.contains(where: { $0.id == suggestion.id }))
+
+        // When
+        viewModel.addStop(from: suggestion)
+
+        // Then
+        #expect(viewModel.selectedStops.contains(where: { $0.id == suggestion.id }))
+        #expect(viewModel.searchText.isEmpty)
+        #expect(viewModel.searchResults.isEmpty)
+    }
+
+    @Test
+    func skipsDuplicateStopWhenAddingSameSuggestion() {
+        // Given
+        let searchService = MockPlacesSearchService(result: .success([]))
+        let viewModel = RouteBuilderViewModel(placesSearchService: searchService)
+        let suggestion = PlaceSuggestion.testSuggestion(id: "added-stop", name: "Added Stop")
+        viewModel.addStop(from: suggestion)
+        #expect(viewModel.selectedStops.count == 1)
+
+        // When
+        viewModel.addStop(from: suggestion)
+
+        // Then
+        #expect(viewModel.selectedStops.count == 1)
     }
 }
+
+private struct TestError: Error {}
 
 private extension RouteStop {
     static func testStops(
@@ -174,6 +247,23 @@ private extension RouteStop {
     }
 }
 
+private extension PlaceSuggestion {
+    static func testSuggestions(count: Int) -> [PlaceSuggestion] {
+        guard count > 0 else { return [] }
+
+        return (1...count).map {
+            testSuggestion(id: "suggestion-\($0)", name: "Suggestion \($0)")
+        }
+    }
+
+    static func testSuggestion(
+        id: String,
+        name: String
+    ) -> PlaceSuggestion {
+        PlaceSuggestion(id: id, name: name, address: "")
+    }
+}
+
 private extension DirectionsRoute {
     static let testRoute = DirectionsRoute(
         polyline: "test-polyline",
@@ -185,6 +275,12 @@ private extension DirectionsRoute {
 private extension RouteBuilderViewModel {
     func waitForRouteBuild() async {
         while isBuildingRoute {
+            await Task.yield()
+        }
+    }
+
+    func waitForSearch() async {
+        while isSearching {
             await Task.yield()
         }
     }
